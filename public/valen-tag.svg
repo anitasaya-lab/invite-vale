@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 360" width="100%" height="100%">
+  <defs>
+    <filter id="valenGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="4" result="blur" />
+      <feMerge>
+        <feMergeNode in="blur" />
+        <feMergeNode in="SourceGraphic" />
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- "Mis XV" aligned over the letters "tin" of Valentina -->
+  <text 
+    x="805" 
+    y="95" 
+    text-anchor="middle"
+    fill="#FFFFFF" 
+    font-family="'Montserrat', system-ui, -apple-system, sans-serif" 
+    font-size="70" 
+    font-weight="300"
+    letter-spacing="3"
+    opacity="0.95"
+  >
+    Mis XV
+  </text>
+  
+  <!-- "Valentina" main title -->
+  <text 
+    x="30" 
+    y="265" 
+    fill="#FFFFFF" 
+    font-family="'Montserrat', system-ui, -apple-system, sans-serif" 
+    font-size="188" 
+    font-weight="400"
+    letter-spacing="-1.5"
+  >
+    Valentina
+  </text>
+</svg>

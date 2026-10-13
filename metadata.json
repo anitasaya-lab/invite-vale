@@ -1,0 +1,6 @@
+{
+  "name": "Invitación de Cumpleaños Digital",
+  "description": "Web interactiva de invitación a cumpleaños con cuenta regresiva, confirmación de asistencia, mapa, dress code, QR para fotos y datos bancarios.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
