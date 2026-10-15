@@ -33,7 +33,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   }, []);
 
   const navLinks = [
-    { label: 'Cronograma', href: '#cuenta-regresiva' },
+    { label: 'Cuenta Regresiva', href: '#cuenta-regresiva' },
     { label: 'Ubicación', href: '#ubicacion' },
     { label: 'Dress Code', href: '#dress-code' },
     { label: 'Fotos (QR)', href: '#album-fotos' },

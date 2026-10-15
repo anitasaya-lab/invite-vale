@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1167.43 409.11">
+  <defs>
+    <style>
+      .cls-1 {
+        font-family: Bonskin, Bonskin;
+        font-size: 263.58px;
+      }
+
+      .cls-1, .cls-2 {
+        fill: #c7ccd5;
+      }
+
+      .cls-2 {
+        font-family: Quicksand-Regular, Quicksand;
+        font-size: 80.46px;
+        font-variation-settings: 'wght' 400;
+      }
+    </style>
+  </defs>
+  <text class="cls-1" transform="translate(56.71 326.82)"><tspan x="0" y="0">Valentina</tspan></text>
+  <text class="cls-2" transform="translate(811.76 128.27)"><tspan x="0" y="0">Mis XV</tspan></text>
+</svg>

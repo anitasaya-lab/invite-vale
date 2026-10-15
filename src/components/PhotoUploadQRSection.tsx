@@ -35,11 +35,11 @@ export const PhotoUploadQRSection: React.FC<PhotoUploadQRSectionProps> = ({
   const [showUploadModal, setShowUploadModal] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Generate QR code for uploading photos
+  const albumUrl = 'https://photos.google.com/album/AF1QipPJyuJYzDt1IWCwFNaK89OtU_zr1ZoP6g50Pf3w';
+
+  // Generate QR code for uploading photos directly to Google Photos album
   useEffect(() => {
-    // Current URL with hashtag or external photo drive URL
-    const targetUrl = window.location.href ? `${window.location.origin}${window.location.pathname}#album-fotos` : uploadUrl;
-    QRCode.toDataURL(targetUrl, {
+    QRCode.toDataURL(albumUrl, {
       width: 280,
       margin: 1.5,
       color: {
@@ -49,7 +49,7 @@ export const PhotoUploadQRSection: React.FC<PhotoUploadQRSectionProps> = ({
     })
       .then((url) => setQrDataUrl(url))
       .catch((err) => console.error('Error generating QR', err));
-  }, [uploadUrl]);
+  }, []);
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -104,132 +104,98 @@ export const PhotoUploadQRSection: React.FC<PhotoUploadQRSectionProps> = ({
   };
 
   return (
-    <section id="album-fotos" className="py-20 px-4 bg-gradient-to-b from-white via-[#F3F5F9] to-white relative overflow-hidden">
-      {/* Decorative background circle */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] bg-[#0833A2]/5 rounded-full blur-3xl pointer-events-none" />
-
-      <div className="max-w-5xl mx-auto relative z-10">
-        {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-14">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0833A2]/10 border border-[#0833A2]/20 text-[#0833A2] text-xs font-semibold tracking-wider uppercase mb-4 animate-float">
-            <Camera className="w-4 h-4 text-[#0833A2]" />
-            <span>Álbum Digital Compartido</span>
-          </div>
-
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#061D60] tracking-tight">
-            Compartí tus Fotos de la Fiesta
-          </h2>
-
-          <p className="mt-3 text-sm sm:text-base text-gray-600 leading-relaxed">
-            Durante la noche y después del festejo, escaneá el código QR para subir las fotos y videos que tomes. ¡Así {celebrantName} podrá guardar cada recuerdo!
-          </p>
+    <section id="album-fotos" className="py-16 sm:py-20 px-4 bg-white text-[#061D60] relative overflow-hidden text-center">
+      <div className="max-w-4xl mx-auto relative z-10 flex flex-col items-center">
+        {/* Animated Camera Icon (monolínea rounded) */}
+        <div className="inline-flex items-center justify-center text-[#0833A2] mb-4 select-none animate-crown">
+          <Camera className="w-9 h-9 sm:w-10 sm:h-10" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
         </div>
 
-        {/* QR & Action Card Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center mb-16">
-          {/* QR Code Presentation Box */}
-          <div className="lg:col-span-5 flex flex-col items-center">
-            <div className="relative group">
-              {/* Outer glowing aura */}
-              <div className="absolute -inset-3 bg-gradient-to-r from-[#0833A2] to-[#061D60] rounded-[2.5rem] opacity-20 blur-xl group-hover:opacity-35 transition duration-500" />
+        {/* Heading: FOTOS */}
+        <h3
+          className="text-2xl sm:text-3xl font-normal text-[#061D60] tracking-[0.2em] uppercase mb-4"
+          style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 400 }}
+        >
+          FOTOS
+        </h3>
 
-              <div className="relative bg-white p-6 sm:p-7 rounded-[2rem] border-2 border-[#C7CCD5]/70 shadow-2xl text-center">
-                <div className="flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider text-[#0833A2] mb-3">
-                  <QrCode className="w-4 h-4" />
-                  <span>Escaneá con tu celular</span>
+        {/* Subtitle paragraph */}
+        <p
+          className="text-gray-600 text-sm sm:text-base max-w-lg mx-auto leading-relaxed mb-10 font-light"
+          style={{ fontFamily: 'Montserrat, sans-serif' }}
+        >
+          Compartí tus fotos y videos de la fiesta para guardar cada momento inolvidable.
+        </p>
+
+        {/* 50/50 Grid: QR Code & Instructions */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center w-full max-w-3xl mx-auto mb-6 text-left">
+          {/* Left: QR Code */}
+          <div className="flex flex-col items-center justify-center text-center">
+            <div className="p-4 bg-[#F3F5F9] rounded-3xl border border-[#C7CCD5]/60 shadow-sm inline-block">
+              {qrDataUrl ? (
+                <img
+                  src={qrDataUrl}
+                  alt="Código QR para subir fotos de la fiesta"
+                  className="w-48 h-48 sm:w-56 sm:h-56 rounded-2xl object-contain mx-auto"
+                />
+              ) : (
+                <div className="w-48 h-48 sm:w-56 sm:h-56 flex items-center justify-center text-gray-400 text-sm">
+                  Cargando QR...
                 </div>
-
-                <div className="p-3 bg-[#F3F5F9] rounded-2xl border border-[#C7CCD5]/50 inline-block shadow-inner">
-                  {qrDataUrl ? (
-                    <img
-                      src={qrDataUrl}
-                      alt="Código QR para subir fotos de la fiesta"
-                      className="w-52 h-52 sm:w-60 sm:h-60 rounded-xl mx-auto object-contain"
-                    />
-                  ) : (
-                    <div className="w-52 h-52 flex items-center justify-center text-gray-400">
-                      Cargando QR...
-                    </div>
-                  )}
-                </div>
-
-                <p className="mt-3.5 text-xs text-gray-500 font-medium max-w-[220px] mx-auto">
-                  Apuntá la cámara de tu celular a este código para subir tus fotos directo.
-                </p>
-
-                <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-center gap-1.5 text-xs text-[#061D60] font-semibold">
-                  <Sparkles className="w-4 h-4 text-[#0833A2]" />
-                  <span>¡Sin descargar ninguna app!</span>
-                </div>
-              </div>
+              )}
             </div>
+            <p className="mt-3 text-xs text-gray-500 font-medium">
+              Escaneá con la cámara de tu celular
+            </p>
           </div>
 
-          {/* Interactive Info and Direct Upload Button */}
-          <div className="lg:col-span-7 space-y-6">
-            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-[#C7CCD5]/60 shadow-lg space-y-5">
-              <h3 className="text-xl sm:text-2xl font-serif font-bold text-[#061D60] flex items-center gap-2.5">
-                <span className="p-2 bg-[#0833A2]/10 rounded-xl text-[#0833A2]">
-                  <Share2 className="w-5 h-5 animate-gentle-bounce" />
+          {/* Right: Instructions (no icon, only steps 1 and 2, single button) */}
+          <div className="flex flex-col justify-center space-y-5">
+            <h4
+              className="text-xl sm:text-2xl font-normal text-[#061D60] tracking-wide"
+              style={{ fontFamily: 'Montserrat, sans-serif' }}
+            >
+              ¿Cómo funciona?
+            </h4>
+
+            <div className="space-y-4 text-sm text-gray-600" style={{ fontFamily: 'Montserrat, sans-serif' }}>
+              <div className="flex items-start gap-3">
+                <span className="w-6 h-6 rounded-full bg-[#0833A2] text-white flex items-center justify-center text-xs font-semibold shrink-0 mt-0.5">
+                  1
                 </span>
-                ¿Cómo funciona el álbum en vivo?
-              </h3>
-
-              <div className="space-y-4 text-sm text-gray-600">
-                <div className="flex items-start gap-3.5">
-                  <span className="w-7 h-7 rounded-full bg-[#0833A2] text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-sm">
-                    1
-                  </span>
-                  <div>
-                    <strong className="text-[#061D60]">Sacá fotos y videos:</strong> Capturá momentos divertidos, la tanda de baile, los selfies con la cumpleañera y la mesa dulce.
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3.5">
-                  <span className="w-7 h-7 rounded-full bg-[#0833A2] text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-sm">
-                    2
-                  </span>
-                  <div>
-                    <strong className="text-[#061D60]">Escaneá o subí desde aquí:</strong> Usá el código QR con cualquier smartphone o apretá el botón para cargarlas al instante.
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-3.5">
-                  <span className="w-7 h-7 rounded-full bg-[#0833A2] text-white flex items-center justify-center text-xs font-bold shrink-0 mt-0.5 shadow-sm">
-                    3
-                  </span>
-                  <div>
-                    <strong className="text-[#061D60]">Aparecen en el muro:</strong> Todos los invitados y la agasajada podrán ver los recuerdos compartidos.
-                  </div>
+                <div>
+                  <strong className="text-[#061D60] font-medium">Sacá fotos y videos:</strong> Capturá los mejores momentos durante toda la fiesta.
                 </div>
               </div>
 
-              {/* Action Buttons */}
-              <div className="pt-2 flex flex-col sm:flex-row gap-3">
-                <button
-                  onClick={() => setShowUploadModal(true)}
-                  className="flex-1 inline-flex items-center justify-center gap-2.5 px-6 py-3.5 bg-gradient-to-r from-[#0833A2] to-[#061D60] hover:brightness-110 text-white font-semibold text-sm rounded-2xl shadow-lg shadow-[#0833A2]/25 transition-all active:scale-95 cursor-pointer"
-                >
-                  <Upload className="w-4 h-4 animate-float" />
-                  <span>Subir una foto ahora</span>
-                </button>
-
-                <a
-                  href={uploadUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-[#F3F5F9] hover:bg-[#C7CCD5]/40 text-[#061D60] border border-[#C7CCD5] font-semibold text-sm rounded-2xl transition-all active:scale-95"
-                >
-                  <ExternalLink className="w-4 h-4 text-[#0833A2]" />
-                  <span>Ver en Google Photos</span>
-                </a>
+              <div className="flex items-start gap-3">
+                <span className="w-6 h-6 rounded-full bg-[#0833A2] text-white flex items-center justify-center text-xs font-semibold shrink-0 mt-0.5">
+                  2
+                </span>
+                <div>
+                  <strong className="text-[#061D60] font-medium">Escaneá o subí:</strong> Usá el código QR o hacé clic en el botón de abajo para cargarlas al instante.
+                </div>
               </div>
+            </div>
+
+            {/* Single Action Button linking directly to Google Photos album */}
+            <div className="pt-2">
+              <a
+                href={albumUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3.5 bg-[#0833A2] hover:bg-[#061D60] text-white font-semibold text-sm rounded-2xl shadow-md hover:shadow-lg transition-all active:scale-95 cursor-pointer"
+                style={{ fontFamily: 'Montserrat, sans-serif' }}
+              >
+                <Upload className="w-4 h-4" strokeWidth={1.5} />
+                <span>Subir una foto ahora</span>
+              </a>
             </div>
           </div>
         </div>
 
-        {/* Live Photo Wall / Gallery Preview */}
-        <div>
+        {/* Live Photo Wall / Gallery Preview (Oculto por ahora) */}
+        <div className="hidden">
           <div className="flex items-center justify-between mb-6">
             <div>
               <h3 className="text-xl font-serif font-bold text-[#061D60]">

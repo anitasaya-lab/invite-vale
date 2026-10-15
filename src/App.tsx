@@ -9,17 +9,15 @@ import { EventDetails, RsvpEntry } from './types';
 import { musicPlayer } from './utils/audioPlayer';
 
 // Components
-import { Navbar } from './components/Navbar';
 import { HeroSection } from './components/HeroSection';
+import { WelcomeSection } from './components/WelcomeSection';
 import { CountdownSection } from './components/CountdownSection';
-import { EventTimelineSection } from './components/EventTimelineSection';
-import { LocationSection } from './components/LocationSection';
+import { EventPartySection } from './components/EventPartySection';
 import { DressCodeSection } from './components/DressCodeSection';
 import { PhotoUploadQRSection } from './components/PhotoUploadQRSection';
 import { GiftSection } from './components/GiftSection';
 import { GiftModal } from './components/GiftModal';
 import { RsvpSection } from './components/RsvpSection';
-import { MusicPartySection } from './components/MusicPartySection';
 import { GuestListModal } from './components/GuestListModal';
 import { EditEventModal } from './components/EditEventModal';
 import { Footer } from './components/Footer';
@@ -31,9 +29,24 @@ export default function App() {
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        if (parsed.celebrantName === 'Clara' || parsed.celebrationType === 'Mis XV' || parsed.celebrationType === '¡Mis 15 Años!') {
-          return { ...initialEventDetails, ...parsed, celebrationType: 'XV' };
+        if (
+          parsed.venueName === 'Salón Bellavista Eventos' ||
+          !parsed.venueAddress?.includes('Grecia')
+        ) {
+          parsed.eventDate = initialEventDetails.eventDate;
+          parsed.partyTime = initialEventDetails.partyTime;
+          parsed.venueName = initialEventDetails.venueName;
+          parsed.venueAddress = initialEventDetails.venueAddress;
+          parsed.venueCity = initialEventDetails.venueCity;
+          parsed.coordinates = initialEventDetails.coordinates;
         }
+        if (parsed.dressCode?.title?.includes('Cocktail')) {
+          parsed.dressCode.title = 'Semiformal';
+        }
+        if (parsed.bankDetails?.holder !== 'Erika Sanchez') {
+          parsed.bankDetails = initialEventDetails.bankDetails;
+        }
+        parsed.photoUploadUrl = initialEventDetails.photoUploadUrl;
         return parsed;
       } catch (e) {
         return initialEventDetails;
@@ -58,10 +71,25 @@ export default function App() {
   // Audio Playback State
   const [isAudioPlaying, setIsAudioPlaying] = useState(false);
 
-  // Modals visibility
   const [isGiftModalOpen, setIsGiftModalOpen] = useState(false);
   const [isGuestListOpen, setIsGuestListOpen] = useState(false);
   const [isEditEventOpen, setIsEditEventOpen] = useState(false);
+
+  // Check URL hash for admin access (e.g. #admin or #lista)
+  useEffect(() => {
+    const handleHash = () => {
+      if (
+        window.location.hash === '#admin' ||
+        window.location.hash === '#lista' ||
+        window.location.search.includes('admin=true')
+      ) {
+        setIsGuestListOpen(true);
+      }
+    };
+    handleHash();
+    window.addEventListener('hashchange', handleHash);
+    return () => window.removeEventListener('hashchange', handleHash);
+  }, []);
 
   // Handle background music toggle
   const handleToggleAudio = () => {
@@ -99,16 +127,26 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#F3F5F9] text-[#061D60] flex flex-col font-sans selection:bg-[#0833A2] selection:text-white">
-      {/* Top Sticky Navigation */}
-      <Navbar
-        details={eventDetails}
-        isAudioPlaying={isAudioPlaying}
-        onToggleAudio={handleToggleAudio}
-        onOpenRsvp={handleScrollToRsvp}
-        onOpenGuestList={() => setIsGuestListOpen(true)}
-        onOpenEditEvent={() => setIsEditEventOpen(true)}
-        rsvpsCount={rsvps.filter((r) => r.attending).length}
-      />
+      {/* Floating Audio Control Button on bottom-right */}
+      <div className="fixed bottom-6 right-6 z-40">
+        <button
+          onClick={handleToggleAudio}
+          className="flex items-center gap-2 px-3.5 py-2.5 bg-[#061D60]/90 hover:bg-[#0833A2] active:scale-95 backdrop-blur-md rounded-full border border-white/20 text-xs font-medium text-white transition-all shadow-xl cursor-pointer"
+          title={isAudioPlaying ? 'Pausar música ambiental' : 'Reproducir música ambiental'}
+        >
+          {isAudioPlaying ? (
+            <>
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400"></span>
+              </span>
+              <span>Pausar Música</span>
+            </>
+          ) : (
+            <span>Música 🎵</span>
+          )}
+        </button>
+      </div>
 
       {/* Main Sections matching agendalafecha structure */}
       <main className="flex-1">
@@ -120,23 +158,19 @@ export default function App() {
           onOpenRsvp={handleScrollToRsvp}
         />
 
+        {/* 1.5. Sección Bienvenida / Mis 15 años */}
+        <WelcomeSection />
+
         {/* 2. Cuenta Regresiva & Agendar fecha */}
         <CountdownSection
           eventDate={eventDetails.eventDate}
           details={eventDetails}
         />
 
-        {/* 3. Cronograma / Recepción y Fiesta */}
-        <EventTimelineSection
-          details={eventDetails}
-        />
+        {/* 3. Sección del Evento: FIESTA */}
+        <EventPartySection />
 
-        {/* 4. Ubicación con Mapa Interactivo exacto */}
-        <LocationSection
-          details={eventDetails}
-        />
-
-        {/* 5. Dress Code con paleta y sugerencias */}
+        {/* 4. Dress Code con paleta y sugerencias */}
         <DressCodeSection
           dressCode={eventDetails.dressCode}
         />
@@ -158,11 +192,6 @@ export default function App() {
         <RsvpSection
           details={eventDetails}
           onNewRsvp={handleNewRsvp}
-        />
-
-        {/* 9. Música de la fiesta / Sugerir temas */}
-        <MusicPartySection
-          initialSongs={sampleSongs}
         />
       </main>
 

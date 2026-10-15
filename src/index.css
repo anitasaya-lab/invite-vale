@@ -117,6 +117,25 @@
   animation: gentleBounce 2.5s ease-in-out infinite;
 }
 
+@keyframes crownFloatPulse {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg) scale(1);
+    opacity: 0.9;
+  }
+  35% {
+    transform: translateY(-3px) rotate(3.5deg) scale(1.07);
+    opacity: 1;
+  }
+  70% {
+    transform: translateY(-1.5px) rotate(-3.5deg) scale(1.04);
+    opacity: 0.95;
+  }
+}
+
+.animate-crown {
+  animation: crownFloatPulse 4.5s ease-in-out infinite;
+}
+
 /* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

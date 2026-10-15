@@ -1,39 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 360" width="100%" height="100%">
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Capa_1" data-name="Capa 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1167.43 409.11">
   <defs>
-    <filter id="valenGlow" x="-20%" y="-20%" width="140%" height="140%">
-      <feGaussianBlur stdDeviation="4" result="blur" />
-      <feMerge>
-        <feMergeNode in="blur" />
-        <feMergeNode in="SourceGraphic" />
-      </feMerge>
-    </filter>
+    <style>
+      .cls-1 {
+        font-family: Bonskin, Bonskin;
+        font-size: 263.58px;
+      }
+
+      .cls-1, .cls-2 {
+        fill: #c7ccd5;
+      }
+
+      .cls-2 {
+        font-family: Quicksand-Regular, Quicksand;
+        font-size: 80.46px;
+        font-variation-settings: 'wght' 400;
+      }
+    </style>
   </defs>
-  
-  <!-- "Mis XV" aligned over the letters "tin" of Valentina -->
-  <text 
-    x="805" 
-    y="95" 
-    text-anchor="middle"
-    fill="#FFFFFF" 
-    font-family="'Montserrat', system-ui, -apple-system, sans-serif" 
-    font-size="70" 
-    font-weight="300"
-    letter-spacing="3"
-    opacity="0.95"
-  >
-    Mis XV
-  </text>
-  
-  <!-- "Valentina" main title -->
-  <text 
-    x="30" 
-    y="265" 
-    fill="#FFFFFF" 
-    font-family="'Montserrat', system-ui, -apple-system, sans-serif" 
-    font-size="188" 
-    font-weight="400"
-    letter-spacing="-1.5"
-  >
-    Valentina
-  </text>
+  <text class="cls-1" transform="translate(56.71 326.82)"><tspan x="0" y="0">Valentina</tspan></text>
+  <text class="cls-2" transform="translate(811.76 128.27)"><tspan x="0" y="0">Mis XV</tspan></text>
 </svg>

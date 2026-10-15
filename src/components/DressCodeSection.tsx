@@ -1,5 +1,4 @@
 import React from 'react';
-import { Shirt, Sparkles, AlertCircle, Palette } from 'lucide-react';
 import { EventDetails } from '../types';
 
 interface DressCodeSectionProps {
@@ -7,77 +6,89 @@ interface DressCodeSectionProps {
 }
 
 export const DressCodeSection: React.FC<DressCodeSectionProps> = ({ dressCode }) => {
+  // Only shades of blue as explicitly requested
+  const bluePalette = [
+    { hex: '#0833A2', name: 'Azul Fiesta' },
+    { hex: '#061D60', name: 'Azul Marino' },
+    { hex: '#1E3A8A', name: 'Azul Noche' },
+    { hex: '#2563EB', name: 'Azul Zafiro' },
+    { hex: '#3B82F6', name: 'Azul Cielo' },
+  ];
+
+  // Replace any occurrence of Cocktail with Semiformal
+  const displayTitle = dressCode.title?.includes('Cocktail')
+    ? dressCode.title.replace(/Cocktail/gi, 'Semiformal')
+    : (dressCode.title || 'Semiformal');
+
   return (
-    <section id="dress-code" className="py-20 px-4 bg-white relative">
-      <div className="max-w-4xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0833A2]/10 border border-[#0833A2]/20 text-[#0833A2] text-xs font-semibold tracking-wider uppercase mb-3 animate-float">
-          <Shirt className="w-4 h-4 text-[#0833A2]" />
-          <span>Código de Vestimenta</span>
+    <section id="dress-code" className="py-16 sm:py-20 px-4 bg-[#F3F5F9] text-[#061D60] relative overflow-hidden text-center">
+      <div className="max-w-2xl mx-auto flex flex-col items-center justify-center relative z-10">
+        {/* Animated icon: Vestido y Corbata (monolínea rounded) */}
+        <div className="inline-flex items-center justify-center text-[#0833A2] mb-4 select-none animate-crown">
+          <svg
+            className="w-9 h-9 sm:w-10 sm:h-10 text-[#0833A2]"
+            viewBox="0 0 52 48"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            {/* Vestido elegante (izquierda) */}
+            <path d="M14 9 L18 9 L20 18 L24 38 L8 38 L12 18 Z" />
+            <path d="M14 9 C14 12 18 12 18 9" />
+            <path d="M11 18 Q16 20 21 18" />
+
+            {/* Corbata elegante (derecha) */}
+            <path d="M35 9 L39 9 L40 13 L34 13 Z" />
+            <path d="M35 13 L33 26 L37 38 L41 26 L39 13 Z" />
+          </svg>
         </div>
 
-        <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#061D60]">
-          Dress Code
-        </h2>
-        <p className="text-gray-600 text-sm sm:text-base mt-2 max-w-md mx-auto">
-          Queremos que te sientas cómodo, elegante y listo para disfrutar toda la noche.
-        </p>
+        {/* Heading: VESTIMENTA */}
+        <h3
+          className="text-2xl sm:text-3xl font-normal text-[#061D60] tracking-[0.2em] uppercase mb-4"
+          style={{ fontFamily: 'Montserrat, sans-serif', fontWeight: 400 }}
+        >
+          VESTIMENTA
+        </h3>
 
-        {/* Central Dress Code Card */}
-        <div className="mt-10 bg-[#F3F5F9] rounded-3xl p-8 sm:p-10 border-2 border-[#C7CCD5]/70 shadow-lg max-w-2xl mx-auto text-center relative overflow-hidden">
-          {/* Subtle top shimmer glow */}
-          <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-[#0833A2] via-[#C7CCD5] to-[#061D60]" />
-
-          {/* Animated Icon Avatar */}
-          <div className="mx-auto w-20 h-20 rounded-2xl bg-white shadow-md flex items-center justify-center mb-5 border border-[#C7CCD5]/60 animate-gentle-bounce">
-            <Shirt className="w-10 h-10 text-[#0833A2]" />
-          </div>
-
-          <h3 className="text-2xl sm:text-3xl font-serif font-bold text-[#0833A2]">
-            {dressCode.title}
-          </h3>
-
-          <p className="text-sm sm:text-base text-gray-700 mt-3 leading-relaxed max-w-lg mx-auto">
-            {dressCode.description}
+        {/* Dress code title & description in blue/gray typography */}
+        <div
+          className="text-base sm:text-lg leading-relaxed font-light max-w-lg mx-auto"
+          style={{ fontFamily: 'Montserrat, sans-serif' }}
+        >
+          <p className="font-medium text-[#0833A2] text-lg sm:text-xl">
+            {displayTitle}
           </p>
-
-          {/* Suggested Color Palette */}
-          <div className="mt-8 pt-6 border-t border-[#C7CCD5]/50">
-            <div className="flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-wider text-[#061D60] mb-4">
-              <Palette className="w-4 h-4 text-[#0833A2] animate-float" />
-              <span>Colores sugeridos e inspiración</span>
-            </div>
-
-            <div className="flex items-center justify-center gap-3 sm:gap-4 flex-wrap">
-              {[
-                { hex: '#0833A2', name: 'Azul Fiesta' },
-                { hex: '#061D60', name: 'Azul Profundo' },
-                { hex: '#C7CCD5', name: 'Plata / Slate' },
-                { hex: '#1E293B', name: 'Noche' },
-                { hex: '#D4AF37', name: 'Dorado / Brillos' },
-              ].map((color, idx) => (
-                <div key={idx} className="flex flex-col items-center gap-1.5 group">
-                  <div
-                    className="w-10 h-10 sm:w-11 sm:h-11 rounded-full shadow-md border-2 border-white group-hover:scale-115 transition-transform cursor-pointer relative flex items-center justify-center"
-                    style={{ backgroundColor: color.hex }}
-                    title={color.name}
-                  >
-                    <span className="opacity-0 group-hover:opacity-100 text-[9px] text-white font-bold drop-shadow">
-                      ✓
-                    </span>
-                  </div>
-                  <span className="text-[10px] text-gray-500 font-medium">{color.name}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Friendly restriction note */}
-          {dressCode.restrictions && (
-            <div className="mt-6 flex items-center justify-center gap-2 p-3.5 bg-amber-50 rounded-2xl border border-amber-200 text-amber-900 text-xs text-left sm:text-center max-w-lg mx-auto">
-              <AlertCircle className="w-4 h-4 text-amber-600 shrink-0" />
-              <span>{dressCode.restrictions}</span>
-            </div>
+          {dressCode.description && (
+            <p className="text-gray-600 text-sm sm:text-base pt-1.5 leading-relaxed">
+              {dressCode.description}
+            </p>
           )}
+        </div>
+
+        {/* Suggested Color Palette: Solo tonos de azul */}
+        <div className="mt-7 pt-5 border-t border-[#C7CCD5]/60 w-full max-w-md flex flex-col items-center">
+          <span
+            className="text-xs uppercase tracking-widest text-gray-500 mb-3.5 font-medium"
+            style={{ fontFamily: 'Montserrat, sans-serif' }}
+          >
+            Colores sugeridos
+          </span>
+
+          <div className="flex items-center justify-center gap-3 sm:gap-4 flex-wrap">
+            {bluePalette.map((color, idx) => (
+              <div key={idx} className="flex flex-col items-center gap-1.5 group">
+                <div
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full shadow-sm border-2 border-white group-hover:scale-110 group-hover:shadow-md transition-all cursor-default"
+                  style={{ backgroundColor: color.hex }}
+                  title={color.name}
+                />
+                <span className="text-[10px] text-gray-500 font-normal">{color.name}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
