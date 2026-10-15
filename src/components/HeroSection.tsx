@@ -34,11 +34,17 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         }}
       />
 
-      {/* Centerpiece: valen-tag.svg */}
+      {/* Centerpiece: valen.png */}
       <div className="relative z-10 max-w-4xl mx-auto flex flex-col items-center justify-center w-full">
         <div className="w-full max-w-md sm:max-w-xl md:max-w-2xl px-2 sm:px-4 my-8 sm:my-12 select-none flex items-center justify-center">
           <img
-            src="/valen-tag.svg"
+            src="/valen.png"
+            onError={(e) => {
+              const target = e.currentTarget;
+              if (!target.src.endsWith('/valen-tag.svg')) {
+                target.src = '/valen-tag.svg';
+              }
+            }}
             alt={`${details.celebrantName} - ${details.celebrationType}`}
             className="w-full h-auto max-h-[300px] sm:max-h-[380px] object-contain drop-shadow-[0_4px_25px_rgba(255,255,255,0.45)] drop-shadow-[0_12px_40px_rgba(0,0,0,0.85)] filter"
           />
